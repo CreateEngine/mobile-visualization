@@ -1,0 +1,30 @@
+.editor{
+    position: relative;
+    height:calc(~"100vh - 180px"); 
+    background: rebeccapurple;
+    display:flex;
+    flex-direction:column;
+    header{
+        height:60px;
+    }
+    footer{
+        height:60px;
+    }
+    .editor-content{
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        .board{
+           flex: 1; 
+           background: #13183a;
+           color:#ffffff; 
+        }
+    }
+    .preview-box{
+        width:375px;
+        height:667px;
+        background: #e9e9e9;
+        border-radius:1px;
+        box-shadow: #000000 0 0 2px inset;
+    }
+}

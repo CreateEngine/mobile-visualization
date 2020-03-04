@@ -8,27 +8,31 @@ const menuConfig = [{
   value: '布局',
   children: [
     {
-      name: 'flex',
+      name: 'Flex',
       value: 'Flex布局'
     },
     {
-      name: 'wingBlank',
+      name: 'WingBlank',
       value: '两页留白'
     },
     {
-      name: 'wingSpace',
+      name: 'WhiteSpace',
       value: '上下留白'
     }
   ]
 },
 {
-  name: 'dataEntry',
+  name: 'DataEntry',
   value: '数据输入',
   children: [
     {
-      name: 'button',
+      name: 'Button',
       value: '按钮'
-    }
+    },
+    {
+      name: 'NavBar',
+      value: '导航'
+    },
   ]
 }]
 export default class Components extends React.Component {

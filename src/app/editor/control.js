@@ -1,17 +1,17 @@
 import React from 'react';
-import { Collapse, Icon, Select } from 'antd';
+import { Collapse, Icon, Select,Tabs,Tree ,Button } from 'antd';
 
+
+const { TabPane } = Tabs;
 const { Panel } = Collapse;
 const { Option } = Select;
-
+const { TreeNode } = Tree;
 function callback(key) {
   console.log(key);
 }
 
 const text = `
-  A dog is a type of domesticated animal.
-  Known for its loyalty and faithfulness,
-  it can be found as a welcome guest in many households across the world.
+ 字体，字体单位，风格...
 `;
 
 const genExtra = () => (
@@ -32,7 +32,9 @@ export default class Control extends React.Component {
   onPositionChange = expandIconPosition => {
     this.setState({ expandIconPosition });
   };
-
+  onSelect = (selectedKeys, info) => {
+    console.log('selected', selectedKeys, info);
+  };
   render() {
     const { expandIconPosition } = this.state;
     return (
@@ -42,22 +44,51 @@ export default class Control extends React.Component {
           onChange={callback}
           expandIconPosition={expandIconPosition}
         >
-          <Panel header="This is panel header 1" key="1" extra={genExtra()}>
+          <Panel header="全局配置
+          " key="1" extra={genExtra()}>
             <div>{text}</div>
           </Panel>
-          <Panel header="This is panel header 2" key="2" extra={genExtra()}>
-            <div>{text}</div>
+          <Panel header="组件配置" key="2" extra={genExtra()}>
+            <div>
+            <Tabs>
+              <TabPane tab="基本设置" key="11">
+                Content of tab 1
+              </TabPane>
+              <TabPane tab="交互" key="22">
+                Content of tab 2
+              </TabPane>
+              <TabPane tab="数据" key="33">
+                Content of tab 3
+              </TabPane>
+            </Tabs>
+            </div>
           </Panel>
-          <Panel header="This is panel header 3" key="3" extra={genExtra()}>
-            <div>{text}</div>
+          <Panel header="组件图层" key="3" extra={genExtra()}>
+            <div>
+            <Tree
+        showLine
+   
+        defaultExpandedKeys={['0-0-0']}
+        onSelect={this.onSelect}
+      >
+        <TreeNode title="parent 1" key="0-0">
+          <TreeNode title="parent 1-0" key="0-0-0">
+            <TreeNode title="leaf" key="0-0-0-0" />
+            <TreeNode title="leaf" key="0-0-0-1" />
+            <TreeNode title="leaf" key="0-0-0-2" />
+          </TreeNode>
+          <TreeNode title="parent 1-1" key="0-0-1">
+            <TreeNode title="leaf" key="0-0-1-0" />
+          </TreeNode>
+          <TreeNode title="parent 1-2" key="0-0-2">
+            <TreeNode title="leaf" key="0-0-2-0" />
+            <TreeNode title="leaf" key="0-0-2-1" />
+          </TreeNode>
+        </TreeNode>
+      </Tree>
+            </div>
           </Panel>
         </Collapse>
-        <br />
-        <span>Expand Icon Position: </span>
-        <Select value={expandIconPosition} onChange={this.onPositionChange}>
-          <Option value="left">left</Option>
-          <Option value="right">right</Option>
-        </Select>
       </div>
     );
   }

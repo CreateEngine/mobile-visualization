@@ -1,11 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { Menu, Select, InputNumber, Switch, Dropdown, Icon, message } from 'antd';
-// import componentList from './components.json';
-import { Button as Mbutton } from 'antd-mobile';
+import componentList from './componentList';
+
 const { Option } = Select;
-const componentList ={
-    "button":"button"
- };
 export default class Simulator extends React.Component {
     constructor() {
         super();
@@ -17,6 +15,7 @@ export default class Simulator extends React.Component {
             simulatorWidth:375,
             simulatorHeight:667,
             componentList:{},
+            elementList:[]
         }
     }
     handleChange(value) {
@@ -73,14 +72,35 @@ dragOver=(e)=>{
   }
   nodeToHtml(){
     document.querySelector('.preview-box').innerHTML='';
-    let listTemp=this.state.componentList;
+    let listTemp=this.state.componentList,
+    elementListTemp=this.state.elementList;
     Object.keys(listTemp).forEach((key)=>{
-        let componentEle=document.createElement(listTemp[key].type),
-            componentText=document.createTextNode(listTemp[key].type);
-            componentEle.appendChild(componentText);
-            componentEle.setAttribute('id',listTemp[key].id);
-            document.querySelector('.preview-box').appendChild(componentEle);
-    })
+        // let componentEle=document.createElement(listTemp[key].type),
+        //     componentText=document.createTextNode(listTemp[key].type);
+        //     componentEle.appendChild(componentText);
+        //     componentEle.setAttribute('id',listTemp[key].id);
+        //     document.querySelector('.preview-box').appendChild(componentEle);
+        // var content = React.createElement(, { id: listTemp[key].id },listTemp[key].type); // 第三个参数可以分开也可以写成一个数组
+    // elementListTemp.push(`<${componentList[listTemp[key].type]}>${listTemp[key].value}</${componentList[listTemp[key].type]}>`);
+    // elementListTemp.push(<Mbutton>{listTemp[key].value}</Mbutton>);
+    if(listTemp[key].type==='flex'){
+    //     <Flex>
+    //     <Flex.Item><PlaceHolder /></Flex.Item>
+    //     <Flex.Item><PlaceHolder /></Flex.Item>
+    //   </Flex>
+     elementListTemp.push(React.createElement(componentList[listTemp[key].type], {ctype:'component'},React.createElement(componentList[listTemp[key].type].Item, {ctype:'component'},listTemp[key].type)));   
+    }else{
+      elementListTemp.push(React.createElement(componentList[listTemp[key].type], {ctype:'component'}, listTemp[key].type));    
+    }
+    
+    });
+    this.setState({
+        elementList:elementListTemp
+    });
+    console.dir(elementListTemp)
+  }
+  clickC(e){
+      console.log(e.target.getAttribute('ctype'))
   }
     render() {
         return (
@@ -98,7 +118,12 @@ dragOver=(e)=>{
                 <div className="preview-box" 
                      style={{width:this.state.simulatorWidth*this.state.slace/100,height:this.state.simulatorHeight*this.state.slace/100}}
                      onDragOver={(e)=>this.dragOver(e)}
-                        onDrop={(e)=>this.drop(e)}>
+                        onDrop={(e)=>this.drop(e)}
+                        onClick={(e)=>this.clickC(e)}>
+                            {this.state.elementList.map((item)=>{
+                                console.dir(item)
+                                return item
+                            })}
                 </div>
             </div>
         )
